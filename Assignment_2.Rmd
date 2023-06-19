@@ -1,0 +1,78 @@
+---
+title: "Assignment_2"
+author: "Vinodh"
+date: "2023-06-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r my first chunk, echo=TRUE}
+# Section 1: Description of the data.
+# The used dataset is titled "US_births_2000-2014_SSA.csv." Between the years of 2000 and 2014, it includes data on births in the US. The Social Security Administration (SSA), which keeps track of births across the nation, gathered the statistics.
+
+# A CSV (Comma-Separated Values) file format is used to store the dataset. A CSV file is a plain text file where each line corresponds to a data record and where values are delimited by commas within each record. Tabular data is frequently transferred and stored in this format.
+
+# In this dataset, every row reflects a record of a birth, and the columns provide various attributes related to each birth. There are five columns: "Year," "Month," "Date_of_Month," "Day_of_Week," and "Births."
+
+
+# Section 2: Reading the data into R
+
+# The "US_births_2000-2014_SSA.csv" dataset will be read into R using the read.csv() function, a base R function for reading CSV files, and allocated to a the data frame object.
+
+# In this situation, the read.csv() method is enough to load the data into R because the dataset is a simple CSV file without any particular arguments or constraints. The delimiter (comma) used to separate the data in each row is identified by itself and it assumes that the file has a header row with column names.
+
+# The dataset can be used for additional investigation and analysis in the file by executing the code listed above, which loads the dataset into the df data frame.
+
+cran_mirror <- "https://cran.r-project.org"
+# Set the CRAN mirror
+options(repos = cran_mirror)
+
+install.packages("readr")
+library(readr)
+install.packages("dplyr")
+library(dplyr)
+install.packages("knitr")
+library(knitr)
+
+# Reading the birth data
+
+birth_df <- readr::read_csv("/Users/vinodhjanga/Downloads/US_births_2000-2014_SSA.csv" , show_col_types = FALSE)
+
+#Section 3 : Clean the data
+
+# Renaming columns
+birth_df2 <- dplyr::rename(birth_df,Year=year,Month=month,Date_Of_Month=date_of_month )
+
+# Subset to keep selected columns
+birth_df3 <- dplyr::select(birth_df2, Year, Month, Date_Of_Month)
+
+# Section 4: Characteristics of the data
+
+# Display number of rows and columns
+cat("This dataframe has", nrow(birth_df3), "rows and", ncol(birth_df3), "columns.")
+
+# Create a table with column names and descriptions
+characteristics_table <- data.frame(Column = colnames(birth_df3), Description = c("The year of the birth record", "The month of the birth record
+", "The date of the month of the birth record"))
+
+# Display the table
+knitr::kable(characteristics_table, format = "markdown")
+
+# Section 5: Summary statistics
+
+# Pick three columns for summary statistics
+subset_birth_df <- birth_df2[, c("Year", "Month", "Date_Of_Month")]
+
+# Calculate summary statistics
+summary_stats <- summary(subset_birth_df, na.rm = TRUE)
+
+# Assign summary to a new object
+summary_table <- as.data.frame(summary_stats)
+
+# Display the summary table
+summary_table
+```
+
